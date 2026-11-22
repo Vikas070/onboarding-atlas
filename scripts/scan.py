@@ -8,8 +8,8 @@ Everything here is deterministic and carries file-path evidence. The AI agent
 uses it as a map, then reads the real code to write the onboarding material.
 
 Safety:
-  * real .env files (only seen when committed/untracked-and-not-ignored) are parsed for variable NAMES only;
-    values are discarded in-process and never written to scan.json or printed
+  * real .env files (only seen when committed/untracked-and-not-ignored) are NEVER opened or read: only their
+    paths are listed and a warning is printed. Placeholder files (.env.example/.sample/.template) are read for names
   * never prints or stores environment variable VALUES
   * git remote URLs are stripped of credentials
   * contributor names are only included with --include-authors
@@ -668,14 +668,8 @@ def scan_infra(root, files, texts_cache):
     return infra
 
 
-def parse_env_examples(root, files, real_env_files=()):
+def parse_env_examples(root, files):
     declared = {}
-    for p in real_env_files:  # names only; values never leave this function
-        t = read_text(root, p, 200_000) or ""
-        for line in t.splitlines():
-            m = re.match(r"^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=", line)
-            if m:
-                declared.setdefault(m.group(1), {"file": p, "hint": "", "from_real_env_file": True})
     for p in files:
         b = os.path.basename(p).lower()
         is_env_name = b.startswith(".env") or b.endswith(".env") or (
@@ -870,7 +864,7 @@ def main():
                         k = m.group(1)
                         if len(env_used[k]) < 2 and p not in env_used[k]:
                             env_used[k].append(p)
-    declared = parse_env_examples(root, files, env_files_real)
+    declared = parse_env_examples(root, files)
     infra = scan_infra(root, files, src_texts)
 
     # service detection: deps + compose images + env keys
@@ -976,7 +970,8 @@ def main():
         P("compose services: " + ", ".join(sorted({s for c in infra["compose"] for s in c["services"]})))
     if env_files_real:
         P("WARNING committed env file(s): " + ", ".join(env_files_real) +
-          "  -> names were read, values were not; check them for real secrets and tell the user")
+          "  -> NOT opened by this scan. Check them for real secrets and tell the user. Variables declared only there "
+          "will appear as used-but-undeclared")
     P(f"CI: {len(infra['ci'])} pipeline file(s)   docker: {len(infra['docker'])}   terraform: {len(infra['terraform'])}   "
       f"k8s: {len(infra['kubernetes'])}")
     P(f"tests: {len(test_files)} files {test_fw}")

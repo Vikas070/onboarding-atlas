@@ -1,6 +1,6 @@
 {
   "name": "onboarding-atlas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Agent skill that generates a verified onboarding doc and an interactive architecture diagram for any repo. Works with Claude Code, Codex, Cursor and other coding agents.",
   "bin": { "onboarding-atlas": "bin/cli.js" },
   "files": ["bin", "SKILL.md", "scripts", "templates", "references", "adapters", "README.md", "LICENSE", "install.sh", "get.sh"],

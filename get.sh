@@ -1,18 +1,18 @@
 #!/usr/bin/env sh
 # onboarding-atlas web installer. Downloads a tagged release from GitHub and runs install.sh. No sudo.
 #
-#   curl -fsSL https://raw.githubusercontent.com/Vikas070/onboarding-atlas/v1.0.0/get.sh | sh -s -- /path/to/project --claude
+#   curl -fsSL https://raw.githubusercontent.com/Vikas070/onboarding-atlas/v1.0.1/get.sh | sh -s -- /path/to/project --claude
 #
 # Environment:
 #   OA_REPO     GitHub "owner/name"                         (default below)
-#   OA_REF      tag or branch to install                    (default: v1.0.0, pin a tag!)
+#   OA_REF      tag or branch to install                    (default: v1.0.1, pin a tag!)
 #   OA_SHA256   expected sha256 of the downloaded tarball   (recommended: fails if it does not match)
 #   OA_TARBALL_URL  override the download URL (testing / mirrors)
 # Prefer to read before you run: download get.sh, open it, then `sh get.sh`.
 set -eu
 
 OA_REPO="${OA_REPO:-Vikas070/onboarding-atlas}"
-OA_REF="${OA_REF:-v1.0.0}"
+OA_REF="${OA_REF:-v1.0.1}"
 URL="${OA_TARBALL_URL:-https://github.com/$OA_REPO/archive/refs/tags/$OA_REF.tar.gz}"
 
 command -v tar >/dev/null 2>&1 || { echo "tar is required" >&2; exit 1; }

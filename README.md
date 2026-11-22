@@ -22,14 +22,14 @@ npx onboarding-atlas doctor               # checks Python 3.8+
 
 **B. One-line web install** (Mac/Linux; pin a tag and ideally a checksum)
 ```sh
-curl -fsSL https://raw.githubusercontent.com/Vikas070/onboarding-atlas/v1.0.0/get.sh \
+curl -fsSL https://raw.githubusercontent.com/Vikas070/onboarding-atlas/v1.0.1/get.sh \
   | OA_SHA256=<sha256 of the release tarball> sh -s -- /path/to/project --claude
 ```
 Prefer to read first? Download `get.sh`, open it, then run `sh get.sh /path/to/project`.
 
 **C. From a clone or zip**
 ```sh
-git clone --depth 1 --branch v1.0.0 https://github.com/Vikas070/onboarding-atlas
+git clone --depth 1 --branch v1.0.1 https://github.com/Vikas070/onboarding-atlas
 sh onboarding-atlas/install.sh /path/to/project
 ```
 
@@ -78,7 +78,7 @@ install.sh
 ## Publishing your own copy (maintainer notes)
 
 1. Already done for this copy: `LICENSE` has your name and `Vikas070` is set in `package.json`, `get.sh` and this README. If you fork or rename, update those three files.
-2. Push to GitHub and create a release tag, for example `v1.0.0`. The tag is what `get.sh` downloads.
-3. Checksum for the web installer: `curl -fsSL https://github.com/<you>/onboarding-atlas/archive/refs/tags/v1.0.0.tar.gz | shasum -a 256` and put the value in the install docs.
+2. Push to GitHub and create a release tag, for example `v1.0.1`. The tag is what `get.sh` downloads.
+3. Checksum for the web installer: `curl -fsSL https://github.com/<you>/onboarding-atlas/archive/refs/tags/v1.0.1.tar.gz | shasum -a 256` and put the value in the install docs.
 4. npm: `npm login`, then `npm publish --access public`. Check the name `onboarding-atlas` is free first (`npm view onboarding-atlas`); if taken, use a scoped name such as `@yourname/onboarding-atlas` and update `package.json`.
 5. Bump `version` in `package.json` and tag again for every change; never re-point an existing tag.
